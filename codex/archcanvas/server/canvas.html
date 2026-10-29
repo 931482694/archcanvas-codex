@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>架构画布</title>
+<link rel="stylesheet" href="/canvas.css">
+</head>
+<body>
+<header id="bar">
+  <div class="brand">
+    <span id="title">架构画布</span>
+    <span id="stats" class="muted"></span>
+  </div>
+  <div class="tools">
+    <div class="zoom">
+      <button id="zoom-out" class="icon" type="button" title="缩小（-）">−</button>
+      <button id="zoom-reset" class="pct" type="button" title="回到 100%（0）">100%</button>
+      <button id="zoom-in" class="icon" type="button" title="放大（+）">＋</button>
+    </div>
+    <button id="mainline-btn" class="btn" type="button" title="按代码执行的先后，看一次完整流程依次经过哪些模块">主线</button>
+    <button id="worklog-btn" class="btn" type="button" title="你每次提的要求：跑了什么、成没成、产出了什么、改了哪些代码、最后的结论">工作记录</button>
+    <button id="wallpaper-btn" class="btn" type="button" title="更换画布的壁纸">更换壁纸</button>
+    <button id="style-btn" class="btn" type="button" title="调整分组框、卡片、文字和连线的颜色与不透明度">调整风格</button>
+    <label class="switch" title="沿连线流动的光点，看数据往哪儿走"><input type="checkbox" id="flow" checked><span>数据流</span></label>
+  </div>
+  <div class="right">
+    <button id="next-pill" class="pill next" type="button" title="Claude 重新画了架构图，等你确认" hidden>新架构图待确认</button>
+    <button id="pending" class="pill" type="button" title="你在图上提给 Claude 的意见和改动" hidden></button>
+    <button id="handover" class="btn primary" type="button" hidden>交给 Claude 实施</button>
+    <button id="checks-pill" class="pill test" type="button" title="Claude 改完后，需要你亲手确认的事" hidden></button>
+    <span id="link" class="link" title="与 Claude 的连接"><i></i><b>连接中</b></span>
+  </div>
+</header>
+<main>
+  <aside id="files">
+    <div class="f-head">
+      <div class="f-title"><b>文件</b><span id="f-count" class="muted"></span><span id="f-branch" class="f-branch"></span></div>
+      <input id="f-search" type="text" placeholder="搜索模块或文件…（/）" autocomplete="off" spellcheck="false">
+      <div id="f-filter"></div>
+    </div>
+    <div id="f-tree" role="tree" aria-label="项目文件"></div>
+    <button id="files-toggle" type="button" title="收起 / 展开文件树">‹</button>
+  </aside>
+  <section id="stage">
+    <div id="wall"></div>
+    <div id="grid" class="dots"></div>
+    <svg id="canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="项目架构图">
+      <defs>
+        <marker id="m-edge" class="m-edge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+        <marker id="m-hot" class="m-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+        <marker id="m-add" class="m-add" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+        <marker id="m-read" class="m-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+        <marker id="m-write" class="m-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+        <marker id="m-remove" class="m-remove" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z"/></marker>
+      </defs>
+      <g id="scene"></g>
+    </svg>
+    <div id="hint" hidden></div>
+    <input id="title-edit" type="text" maxlength="40" autocomplete="off" spellcheck="false" aria-label="这个分组的名字" hidden>
+    <input id="sketch-name" type="text" maxlength="80" placeholder="输入名字…" autocomplete="off" spellcheck="false" aria-label="新模块的名字" hidden>
+    <div id="editor" hidden></div>
+    <div id="legend"></div>
+    <div id="empty" hidden>
+      <h2>这个项目还没有架构图</h2>
+      <p>让 Claude 读一遍代码，把模块分好组、连好线，画到这里。</p>
+      <button id="generate" class="btn primary" type="button">让 Claude 生成架构图</button>
+    </div>
+  </section>
+  <aside id="panel">
+    <button id="panel-toggle" type="button" title="收起 / 展开侧栏">›</button>
+    <div id="panel-body"></div>
+  </aside>
+</main>
+<div id="menu" role="menu" hidden></div>
+<div id="submenu" role="menu" hidden></div>
+<div id="pop" role="dialog" hidden></div>
+<div id="dialog-wrap" hidden><div id="dialog" role="dialog" aria-modal="true"></div></div>
+<div id="toasts" aria-live="polite"></div>
+<div id="offline" hidden>与 Claude 的连接断开了。回到 Claude 输入 <code>/archcanvas</code> 重新打开。</div>
+<script src="/canvas.js"></script>
+</body>
+</html>

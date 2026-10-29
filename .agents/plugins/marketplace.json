@@ -1,0 +1,14 @@
+{
+  "name": "claude-mods",
+  "interface": {
+    "displayName": "claude-mods（archcanvas 架构画布）"
+  },
+  "plugins": [
+    {
+      "name": "archcanvas",
+      "source": { "source": "local", "path": "./codex/archcanvas" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

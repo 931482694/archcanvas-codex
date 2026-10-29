@@ -1,0 +1,22 @@
+{
+  "name": "archcanvas",
+  "version": "0.5.2",
+  "description": "项目架构画布：在浏览器里全屏查看分层架构（只在本机），带文件树；在图上提意见、增删模块和依赖，交给 Codex 实施；每个模块记下 Codex 改过的文件、diff 和当时的对话。",
+  "author": { "name": "931482694" },
+  "homepage": "https://github.com/931482694/claude-mods",
+  "repository": "https://github.com/931482694/claude-mods",
+  "license": "MIT",
+  "keywords": ["architecture", "canvas", "file-tree", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "archcanvas 架构画布",
+    "shortDescription": "在浏览器里看项目架构，在图上提改动交给 Codex",
+    "longDescription": "把项目画成分层架构图，在本机浏览器里全屏显示，带文件树。在图上提意见、增删模块和依赖，交给 Codex 实施；Codex 改过的文件按模块记下 diff 和当时的对话。所有数据只在本机。",
+    "developerName": "931482694",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "defaultPrompt": ["打开架构画布", "分析项目并生成架构图", "处理架构图待办"]
+  }
+}

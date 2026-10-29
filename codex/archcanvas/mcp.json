@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "archcanvas": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('node:fs'),p=require('node:path'),os=require('node:os'),u=require('node:url');const home=process.env.CODEX_HOME||p.join(os.homedir(),'.codex');const base=p.join(home,'plugins','cache','claude-mods','archcanvas');const file=[\"0.5.2\",'local'].map(v=>p.join(base,v,'mcp','server.mjs')).find(f=>fs.existsSync(f));if(!file)throw new Error('archcanvas installed copy not found; reinstall archcanvas@claude-mods');import(u.pathToFileURL(file).href);"
+      ],
+      "tool_timeout_sec": 60,
+      "default_tools_approval_mode": "writes"
+    }
+  }
+}
